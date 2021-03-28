@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+// websvr -> cachesvr
+package cache;
+
+
+import "base.proto";
+
+
+message GetDocumentRequest {
+  string shortLink = 1;
+}
+
+message GetDocumentResponse {
+  base.RespStatus status = 1;
+  base.Document document = 2;
+}
+
+
+message SetDocumentRequest {
+  base.Document document = 1;
+}
+
+
+message SetDocumentResponse {
+  base.RespStatus status = 1;
+}
+
+
+service WebSvrToCacheSvr {
+  rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse) {}
+  rpc SetDocument(SetDocumentRequest) returns (SetDocumentResponse) {}
+}
+
+

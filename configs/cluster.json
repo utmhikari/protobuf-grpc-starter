@@ -1,0 +1,12 @@
+{
+  "serverConfigs": {
+    "cachesvr": {
+      "internalPort": 9911,
+      "externalPort": 9011
+    },
+    "websvr": {
+      "internalPort": 9910,
+      "externalPort": 9010
+    }
+  }
+}
