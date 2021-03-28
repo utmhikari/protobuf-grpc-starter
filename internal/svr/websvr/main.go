@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/utmhikari/protobuf-grpc-starter/internal/config"
+	"github.com/utmhikari/protobuf-grpc-starter/internal/shared/config"
 	"github.com/utmhikari/protobuf-grpc-starter/internal/svr/websvr/handler"
 	"log"
 	"net/http"

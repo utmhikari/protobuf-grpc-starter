@@ -16,10 +16,10 @@ proto:
 	--go-grpc_out=$(GOPATH)/src \
 	--go_opt=Mbase.proto=$(PROJECT_PATH)/$(PB_CODE_ROOT)/base \
 	--go-grpc_opt=Mbase.proto=$(PROJECT_PATH)/$(PB_CODE_ROOT)/base \
-	--go_opt=Mw2c.proto=$(PROJECT_PATH)/$(PB_CODE_ROOT)/w2c \
-    --go-grpc_opt=Mw2c.proto=$(PROJECT_PATH)/$(PB_CODE_ROOT)/w2c \
+	--go_opt=Mcache.proto=$(PROJECT_PATH)/$(PB_CODE_ROOT)/cache \
+    --go-grpc_opt=Mcache.proto=$(PROJECT_PATH)/$(PB_CODE_ROOT)/cache \
 	base.proto \
-	w2c.proto
+	cache.proto
 
 clean:
 	@echo "clean all builds..."

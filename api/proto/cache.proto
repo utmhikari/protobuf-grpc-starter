@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-// websvr -> cachesvr
 package cache;
 
 
@@ -27,7 +26,7 @@ message SetDocumentResponse {
 }
 
 
-service WebSvrToCacheSvr {
+service Cache {
   rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse) {}
   rpc SetDocument(SetDocumentRequest) returns (SetDocumentResponse) {}
 }

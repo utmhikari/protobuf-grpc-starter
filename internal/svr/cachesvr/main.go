@@ -1,9 +1,9 @@
 package cachesvr
 
 import (
-	"github.com/utmhikari/protobuf-grpc-starter/internal/config"
+	"github.com/utmhikari/protobuf-grpc-starter/internal/shared/config"
+	"github.com/utmhikari/protobuf-grpc-starter/internal/shared/util/fs"
 	"github.com/utmhikari/protobuf-grpc-starter/internal/svr/cachesvr/cache"
-	"github.com/utmhikari/protobuf-grpc-starter/pkg/fs"
 	"log"
 )
 
@@ -29,6 +29,5 @@ func main() {
 		panic(err)
 	}
 
-	// TODO: run listener
-
+	startServer(svrCfg)
 }

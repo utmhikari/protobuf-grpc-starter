@@ -3,7 +3,7 @@ package cache
 import (
 	"bytes"
 	"fmt"
-	"github.com/utmhikari/protobuf-grpc-starter/pkg/models"
+	pb "github.com/utmhikari/protobuf-grpc-starter/api/pb/base"
 	"sync"
 )
 
@@ -14,7 +14,7 @@ import (
  */
 
 type Node struct {
-	document models.Document
+	document *pb.Document
 
 	prev *Node
 	next *Node
@@ -117,7 +117,7 @@ type LRUCache struct {
 	maxSize int
 
 	nodes LinkedList
-	mp    map[string]*Node
+	mp    map[string]*Node  // ShortLink -> NodePtr
 
 	mu sync.RWMutex
 }
@@ -138,7 +138,7 @@ func Init(c *Config) error {
 }
 
 
-func Get(shortLink string) *models.Document {
+func Get(shortLink string) *pb.Document {
 	if cache == nil {
 		return nil
 	}
@@ -152,11 +152,11 @@ func Get(shortLink string) *models.Document {
 	}
 
 	cache.nodes.MoveToFront(node)
-	return &node.document
+	return node.document
 }
 
 
-func Set(doc *models.Document) {
+func Set(doc *pb.Document) {
 	if cache == nil || doc == nil || len(doc.ShortLink) == 0 {
 		return
 	}
@@ -171,12 +171,12 @@ func Set(doc *models.Document) {
 			cache.nodes.RemoveFromTail()
 		}
 		newNode := &Node{
-			document: *doc,
+			document: doc,
 		}
 		cache.nodes.AppendToFront(newNode)
 		cache.mp[doc.ShortLink] = newNode
 	} else {
-		node.document = *doc
+		node.document = doc
 		cache.nodes.MoveToFront(node)
 	}
 }

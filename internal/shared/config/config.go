@@ -2,12 +2,21 @@ package config
 
 import (
 	"errors"
-	"github.com/utmhikari/protobuf-grpc-starter/pkg/fs"
+	"fmt"
+	"github.com/utmhikari/protobuf-grpc-starter/internal/shared/util/fs"
 )
 
 type ServerConfig struct {
 	InternalPort int `json:"internalPort"`
 	ExternalPort int `json:"externalPort"`
+}
+
+func (sc *ServerConfig) GetInternalPortStr() string {
+	return fmt.Sprintf(":%d", sc.InternalPort)
+}
+
+func (sc *ServerConfig) GetExternalPortStr() string {
+	return fmt.Sprintf(":%d", sc.ExternalPort)
 }
 
 
