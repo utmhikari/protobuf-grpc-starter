@@ -6,7 +6,14 @@ PROJECT_PATH = github.com/utmhikari/protobuf-grpc-starter
 PB_PROTO_ROOT = api/proto
 PB_CODE_ROOT = api/pb
 
-all: proto
+# for binaries
+BIN_ROOT = bin
+
+all: proto server
+
+server:
+	@echo "make servers..."
+	mkdir -p $(BIN_ROOT)
 
 proto:
 	@echo "make proto -> pb & grpc..."
@@ -24,7 +31,11 @@ proto:
 clean:
 	@echo "clean all builds..."
 
-clean: clean_proto
+clean: clean_bin clean_proto
+
+clean_bin:
+	@echo "clean binaries"
+	rm -rf $(BIN_ROOT)
 
 clean_proto:
 	@echo "clean all generated proto codes..."

@@ -1,4 +1,4 @@
-package websvr
+package main
 
 import (
 	"errors"
@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/utmhikari/protobuf-grpc-starter/internal/shared/config"
 	"github.com/utmhikari/protobuf-grpc-starter/internal/svr/websvr/handler"
+	cacheService "github.com/utmhikari/protobuf-grpc-starter/internal/svr/websvr/service/cache"
 	"log"
 	"net/http"
 )
@@ -21,8 +22,8 @@ func getWebEngine() *gin.Engine {
 
 		documents := v1.Group("/documents")
 		{
-			documents.GET("/", handler.Document.GetByQuery)
-			documents.POST("/", handler.Document.Create)
+			documents.GET("", handler.Document.GetByQuery)
+			documents.POST("", handler.Document.Create)
 		}
 
 		document := v1.Group("/document")
@@ -35,7 +36,7 @@ func getWebEngine() *gin.Engine {
 }
 
 
-func Start() error {
+func startHttpServer() error {
 	svrCfg, err := config.GetServerConfig("websvr")
 	if err != nil {
 		return err
@@ -54,6 +55,17 @@ func Start() error {
 	}
 
 	return httpServer.ListenAndServe()
+}
+
+
+func Start() error {
+	// start cachesvr client
+	if err := cacheService.StartCacheSvrClient(); err != nil {
+		return err
+	}
+
+	// start httpserver
+	return startHttpServer()
 }
 
 

@@ -1,4 +1,4 @@
-package cachesvr
+package main
 
 import (
 	"github.com/utmhikari/protobuf-grpc-starter/internal/shared/config"
@@ -6,7 +6,6 @@ import (
 	"github.com/utmhikari/protobuf-grpc-starter/internal/svr/cachesvr/cache"
 	"log"
 )
-
 
 
 func main() {
@@ -29,5 +28,5 @@ func main() {
 		panic(err)
 	}
 
-	startServer(svrCfg)
+	cache.StartServer(svrCfg)
 }

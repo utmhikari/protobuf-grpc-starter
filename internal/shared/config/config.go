@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/utmhikari/protobuf-grpc-starter/internal/shared/util/fs"
+	"log"
 )
 
 type ServerConfig struct {
@@ -21,12 +22,15 @@ func (sc *ServerConfig) GetExternalPortStr() string {
 
 
 type ClusterConfig struct {
-	ServerConfigs map[string]ServerConfig `json:"server"`
+	ServerConfigs map[string]ServerConfig `json:"serverConfigs"`
 }
 
 
+const CfgRoot string = "./configs"
+
+
 func GetConfigPath(name string) string {
-	return "./config/" + name
+	return fmt.Sprintf("%s/%s", CfgRoot, name)
 }
 
 
@@ -37,6 +41,8 @@ func GetClusterConfig() (*ClusterConfig, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// log.Printf("cluster config: %+v\n", cfg)
 	return &cfg, nil
 }
 
@@ -51,6 +57,8 @@ func GetServerConfig(name string) (*ServerConfig, error) {
 	if !ok {
 		return nil, errors.New("cannot find cfg of server " + name)
 	}
+
+	log.Printf("server %s config: %+v\n", name, svrCfg)
 
 	return &svrCfg, nil
 }

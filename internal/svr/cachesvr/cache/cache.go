@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	pb "github.com/utmhikari/protobuf-grpc-starter/api/pb/base"
+	"log"
 	"sync"
 )
 
@@ -51,10 +52,14 @@ func (l*LinkedList) MoveToFront(n *Node) {
 
 	prev, next := n.prev, n.next
 	prev.next = next
+	if l.tail == n {
+		l.tail = prev
+	}
 	if next != nil {
 		next.prev = prev
 	}
 	n.next = l.head
+	l.head.prev = n
 	n.prev = nil
 	l.head = n
 }
@@ -71,7 +76,7 @@ func (l*LinkedList) RemoveFromTail() {
 	}
 
 	l.tail.prev = nil
-	l.tail = nil
+	l.tail = prev
 	l.size--
 }
 
@@ -152,6 +157,9 @@ func Get(shortLink string) *pb.Document {
 	}
 
 	cache.nodes.MoveToFront(node)
+
+	log.Printf("Get %s:\n%s\n%s\n",
+		shortLink, cache.nodes.ToString(), cache.nodes.ToStringReverse())
 	return node.document
 }
 
@@ -163,6 +171,10 @@ func Set(doc *pb.Document) {
 
 	cache.mu.Lock()
 	defer cache.mu.Unlock()
+
+	if nil == cache.mp {
+		cache.mp = make(map[string]*Node)
+	}
 
 	node, ok := cache.mp[doc.ShortLink]
 	if !ok {
@@ -179,4 +191,7 @@ func Set(doc *pb.Document) {
 		node.document = doc
 		cache.nodes.MoveToFront(node)
 	}
+
+	log.Printf("Set %s:\n%s\n%s\n",
+		doc.ShortLink, cache.nodes.ToString(), cache.nodes.ToStringReverse())
 }

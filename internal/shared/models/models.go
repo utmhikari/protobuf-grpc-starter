@@ -13,10 +13,10 @@ const MaxShortLinkLength = 8
 
 
 type Query struct {
-	ShortLink string  `json:"shortLink"`
+	ShortLink string  `json:"shortLink" form:"shortLink"`
 
-	Author string  `json:"author"`
-	Keyword string `json:"keyword"`
+	Author string  `json:"author" form:"author"`
+	Keyword string `json:"keyword" form:"keyword"`
 }
 
 
@@ -26,7 +26,9 @@ func (q *Query) Hash() string {
 	}
 
 	hs := fmt.Sprintf("Author:%s,Keyword:%s", q.Author, q.Keyword)
-	md5Str := hex.EncodeToString(md5.New().Sum([]byte(hs)))
+	m := md5.New()
+	m.Write([]byte(hs))
+	md5Str := hex.EncodeToString(m.Sum(nil))
 
 	return md5Str
 }
@@ -54,24 +56,19 @@ type Document struct {
 }
 
 
-func NewDocument(content string, author string) *Document {
-	nowTimeStamp := time.Now().UnixNano()
-	doc := Document{
-		Content:      content,
-		Author:       author,
-		ShortLink:    "",
-		Created:      nowTimeStamp,
-	}
-	doc.GenShortLink()
-
-	return &doc
-}
-
-func (d *Document) GenShortLink() {
+func (d *Document) GenMeta() {
 	if d != nil {
-		hs := fmt.Sprintf("time:%d,author:%s,content:%s,title:%s",
+		// gen created
+		d.Created = time.Now().UnixNano()
+
+		// gen shortlink
+		hs := fmt.Sprintf("time:%d_author:%s_content:%s_title:%s",
 			d.Created, d.Author, d.Content, d.Title)
-		md5Str := hex.EncodeToString(md5.New().Sum([]byte(hs)))
+		m := md5.New()
+		m.Write([]byte(hs))
+		md5Str := hex.EncodeToString(m.Sum(nil))
+		// fmt.Printf("%s -> %s\n", hs, md5Str)
+
 		if len(md5Str) > MaxShortLinkLength {
 			md5Str = md5Str[:MaxShortLinkLength]
 		}

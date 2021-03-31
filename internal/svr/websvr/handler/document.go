@@ -32,6 +32,7 @@ func (_ *document) GetByQuery(c *gin.Context) {
 	docs, err := service.GetDocumentsByQuery(&query)
 	if err != nil {
 		ErrorResponse(c, err)
+		return
 	}
 
 	SuccessDataResponse(c, docs)
