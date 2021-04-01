@@ -52,5 +52,5 @@ func (_ *document) Create(c *gin.Context) {
 		return
 	}
 
-	SuccessMsgResponse(c, "create doc successfully")
+	SuccessMsgResponse(c, doc.ShortLink)
 }

@@ -8,12 +8,17 @@ PB_CODE_ROOT = api/pb
 
 # for binaries
 BIN_ROOT = bin
+CGO_ENABLED=0
+GOOS=windows
+GOARCH=amd64
 
 all: proto server
 
 server:
 	@echo "make servers..."
 	mkdir -p $(BIN_ROOT)
+	go build -o $(BIN_ROOT) ./internal/svr/websvr/main/websvr.go
+	go build -o $(BIN_ROOT) ./internal/svr/cachesvr/main/cachesvr.go
 
 proto:
 	@echo "make proto -> pb & grpc..."
@@ -27,9 +32,6 @@ proto:
     --go-grpc_opt=Mcache.proto=$(PROJECT_PATH)/$(PB_CODE_ROOT)/cache \
 	base.proto \
 	cache.proto
-
-clean:
-	@echo "clean all builds..."
 
 clean: clean_bin clean_proto
 
